@@ -45,16 +45,16 @@ Describe an AI system in plain language. Five specialist agents assess it in par
 ## Architecture
 
 ```mermaid
-flowchart LR
+flowchart TD
     U["User (browser)"] -->|"POST /api/assess, NDJSON stream"| API["FastAPI: validation, limits, streaming"]
     API --> O
 
     subgraph G["LangGraph StateGraph (one run)"]
-        O["Orchestrator: profile and routing plan"] -->|"Send x N, parallel"| S["Specialist agents: Risk, Data Governance, Security, Human Oversight, Governance"]
-        S --> K["Critic: review and disagreement detection"]
-        K -->|"open disagreement and budget left"| R["Reassessment: Send to affected agents only"]
+        O["Orchestrator<br/>profile and routing plan"] -->|"Send x N, parallel"| S["Specialist agents<br/>Risk, Data Governance, Security,<br/>Human Oversight, Governance"]
+        S --> K["Critic<br/>review and disagreement detection"]
+        K -->|"open disagreement and budget left"| R["Reassessment<br/>Send to affected agents only"]
         R --> S
-        K -->|"none open or budget used"| C["Consensus: weights, confidence, floors"]
+        K -->|"none open or budget used"| C["Consensus<br/>weights, confidence, floors"]
         C --> SM["Executive summary"]
         SM --> F["Governance report"]
     end
