@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import { Footer } from "@/components/Footer";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel", display: "swap" });
@@ -21,12 +22,20 @@ const DESCRIPTION =
   "Multi-agent AI governance and risk intelligence. Specialist agents assess an AI system in parallel, a critic audits them, and disagreements are surfaced rather than hidden. Informational only, not legal advice.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  alternates: { canonical: "/" },
   title: { default: "EUROPA AI GOVERNANCE", template: "%s | EUROPA AI GOVERNANCE" },
   description: DESCRIPTION,
   applicationName: "EUROPA AI GOVERNANCE",
   authors: [{ name: "Shahil" }],
-  openGraph: { type: "website", siteName: "EUROPA AI GOVERNANCE", title: "EUROPA AI GOVERNANCE", description: DESCRIPTION },
-  twitter: { card: "summary", title: "EUROPA AI GOVERNANCE", description: DESCRIPTION },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "EUROPA AI GOVERNANCE",
+    title: "EUROPA AI GOVERNANCE",
+    description: DESCRIPTION,
+  },
+  twitter: { card: "summary_large_image", title: "EUROPA AI GOVERNANCE", description: DESCRIPTION },
   robots: { index: true, follow: true },
 };
 

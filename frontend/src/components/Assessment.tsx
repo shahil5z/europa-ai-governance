@@ -124,7 +124,7 @@ export function Assessment() {
       </p>
 
       <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
-        <div className="min-w-0 space-y-4">
+        <div className="min-w-0 space-y-4 sticky-console">
           <Console
             scenarios={scenarios}
             scenariosError={scenariosError}

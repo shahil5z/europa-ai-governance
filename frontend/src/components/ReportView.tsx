@@ -235,7 +235,7 @@ export const ReportView = forwardRef<HTMLElement, { report: GovernanceReport }>(
 
       {c ? (
         <Section id="sec-consensus" title="Agent consensus">
-          <div className="overflow-x-auto border border-rule">
+          <div className="overflow-x-auto border border-rule" role="region" aria-label="Agent consensus table, scrollable" tabIndex={0}>
             <table className="w-full min-w-[34rem] border-collapse text-left text-sm">
               <caption className="sr-only">Level, confidence and weight contributed by each agent to the overall result</caption>
               <thead className="bg-surface-2 font-mono text-[0.68rem] uppercase tracking-[0.1em] text-faint">

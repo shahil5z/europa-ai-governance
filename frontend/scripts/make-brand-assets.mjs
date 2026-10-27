@@ -18,6 +18,13 @@ await sharp(src).resize(720, 720).png({ compressionLevel: 9 }).toFile("public/lo
 // Mark occupies roughly x 28-74%, y 17-60% of the canvas; crop a square around it.
 const side = Math.round(meta.width * 0.51);
 const crop = { left: Math.round(meta.width * 0.253), top: Math.round(meta.width * 0.126), width: side, height: side };
-await sharp(src).extract(crop).resize(512, 512).png().toFile("src/app/icon.png");
-await sharp(src).extract(crop).resize(180, 180).png().toFile("src/app/apple-icon.png");
+await sharp(src).extract(crop).resize(192, 192).png({ compressionLevel: 9 }).toFile("src/app/icon.png");
+await sharp(src).extract(crop).resize(180, 180).png({ compressionLevel: 9 }).toFile("src/app/apple-icon.png");
+// Social preview (1200x630): the logo centered on the same black as the site.
+const logo = await sharp(src).resize(560, 560).png().toBuffer();
+const card = sharp({ create: { width: 1200, height: 630, channels: 3, background: "#000000" } })
+  .composite([{ input: logo, left: 320, top: 35 }])
+  .png({ compressionLevel: 9 });
+await card.clone().toFile("src/app/opengraph-image.png");
+await card.clone().toFile("src/app/twitter-image.png");
 console.log("done");

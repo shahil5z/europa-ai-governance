@@ -11,7 +11,7 @@
   --color-eu-soft: #8fb2ff;
   --color-paper: #e9eefb;
   --color-muted: #94a1bd;
-  --color-faint: #66738f;
+  --color-faint: #7d8aa8;
   --color-level-low: #5fd0b0;
   --color-level-medium: #e6bd52;
   --color-level-high: #f59150;
@@ -149,4 +149,13 @@ body {
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* Keep the console in view beside the live panel, only when the viewport is tall enough to fit it. */
+@media (min-width: 1024px) and (min-height: 780px) {
+  .sticky-console {
+    position: sticky;
+    top: 1.5rem;
+    align-self: start;
+  }
 }
