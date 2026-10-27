@@ -36,3 +36,7 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+# local notes
+AGENTS.md
+PROJECT-CONTEXT.md
