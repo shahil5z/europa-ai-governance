@@ -24,13 +24,21 @@
   <a href="https://europa-ai-governance.vercel.app"><img alt="Live Demo" src="https://img.shields.io/badge/LIVE%20DEMO-Open%20EUROPA%20AI%20GOVERNANCE-2563EB?style=for-the-badge&logo=vercel&logoColor=white"></a>
 </p>
 
-Describe an AI system in plain language. Five specialist agents assess it in parallel, a critic audits their work, disagreements are detected and sent back for reassessment, and deterministic code turns the result into a structured, auditable governance report. You watch the agent network and the audit trail update live while it runs.
+Multi-agent AI governance platform that evaluates AI systems across risk, data governance, security, human oversight, and regulatory considerations, then produces a structured and auditable governance report.
 
-<p align="center">
-  <img src="docs/screenshots/live-agent-network.jpg" alt="The live console during a run: scenario picker, agent network and audit trail" width="860">
-</p>
+<img src="docs/screenshots/landing.png" alt="EUROPA AI GOVERNANCE landing page with the logo, title and Start Assessment button" width="100%">
 
 > This tool provides AI-assisted governance analysis for informational purposes and does not constitute legal advice, regulatory certification, or a formal compliance determination.
+
+## Assessment & Agent Consensus
+
+The live assessment interface streams the execution of the multi-agent governance workflow, showing specialist agent states, confidence levels, risk levels, and critic review as the run progresses.
+
+<img src="docs/screenshots/assessment-console.png" alt="Live assessment console showing scenario selection and the agent network with specialist states, risk levels and confidence" width="100%">
+
+The final **Agent Consensus** view combines the specialist assessments using confidence-adjusted weights to produce a transparent, auditable governance decision with supporting notes and an overall risk level.
+
+<img src="docs/screenshots/agent-consensus.png" alt="Agent Consensus table with each agent's risk level, adjusted confidence, weight and notes" width="100%">
 
 ## Key capabilities
 
@@ -44,26 +52,9 @@ Describe an AI system in plain language. Five specialist agents assess it in par
 
 ## Architecture
 
-```mermaid
-flowchart TD
-    U["User (browser)"] -->|"POST /api/assess, NDJSON stream"| API["FastAPI: validation, limits, streaming"]
-    API --> O
+<img src="docs/screenshots/architecture.png" alt="Architecture diagram: user, FastAPI, LangGraph orchestrator, parallel specialist agents, critic, reassessment, consensus and governance report" width="100%">
 
-    subgraph G["LangGraph StateGraph (one run)"]
-        O["Orchestrator<br/>profile and routing plan"] -->|"Send x N, parallel"| S["Specialist agents<br/>Risk, Data Governance, Security,<br/>Human Oversight, Governance"]
-        S --> K["Critic<br/>review and disagreement detection"]
-        K -->|"open disagreement and budget left"| R["Reassessment<br/>Send to affected agents only"]
-        R --> S
-        K -->|"none open or budget used"| C["Consensus<br/>weights, confidence, floors"]
-        C --> SM["Executive summary"]
-        SM --> F["Governance report"]
-    end
-
-    F -->|"report event, then end"| API
-    API -->|"audit events as they happen"| U
-```
-
-The compiled graph in `backend/europa/graph.py` is `START -> orchestrate -> specialist (xN, parallel) -> review -> (specialist | consensus) -> summarize -> finalize -> END`. The critic and the deterministic disagreement check both live in the `review` node.
+Specialist agents analyze risk, data governance, security, human oversight, and governance in parallel. A critic reviews their findings and triggers targeted reassessment when needed. The validated results are combined into a confidence-aware governance report.
 
 ### Agent responsibilities
 
@@ -79,19 +70,26 @@ The compiled graph in `backend/europa/graph.py` is `START -> orchestrate -> spec
 
 ### How it works
 
-1. The request is validated by a Pydantic model and rate limited, then the run streams back as NDJSON.
-2. The orchestrator profiles the system and the graph fans out to the selected specialists with `Send`.
-3. Each specialist is a LangChain chain, `ChatPromptTemplate | ChatOpenAI.with_structured_output(Schema, method="json_schema", strict=True)`. Output that fails validation gets one retry with the error as feedback, then that agent is marked failed.
-4. The critic reviews. Deterministic rules add disagreements (for example a spread of two or more risk levels, or a security outlier) and critic issues of medium severity or higher.
-5. If anything is open and rounds remain (default 1, hard maximum 2), only the named agents are re-run with the conflicting view in context.
-6. Consensus is computed in code. Every disagreement stays in the report with a status of resolved, unresolved or open.
-7. The report carries limitations, a status of complete, partial or failed, and a forced `requires_legal_review = true`.
+1. **Submit a system**  
+   Describe an AI system and its intended use, which is validated before assessment.
+
+2. **Multi-agent assessment**  
+   Specialist agents independently evaluate the system across risk, data governance, security, human oversight, and governance.
+
+3. **Critic review**  
+   A dedicated critic reviews the findings, identifies inconsistencies or disagreements, and flags areas that need closer examination.
+
+4. **Targeted reassessment**  
+   When significant disagreements are found, only the affected agents reassess their findings with the conflicting perspectives in context.
+
+5. **Governance report**  
+   The validated findings are combined into a structured, confidence-aware report with identified risks, disagreements, recommendations, limitations, and a required legal review notice.
 
 ### Why LangGraph, LangChain and Pydantic
 
-- **LangGraph:** typed shared state with merge reducers so parallel specialists write safely, `Send` for dynamic fan-out and a targeted second fan-out, conditional edges for the bounded critic loop, and per-run context in `config["configurable"]` so concurrent requests never share state.
-- **LangChain:** prompt templates and structured output binding for every agent call.
-- **Pydantic v2:** the contract between model, graph, API and UI (`extra="forbid"`). Validators enforce hedged wording, force `requires_legal_review`, bound lists and strings, and validate routing.
+- **LangGraph:** Orchestrates the multi-agent workflow, manages shared state, runs specialists in parallel, and handles targeted reassessment.
+- **LangChain:** Powers the agent prompts and structured interactions with the language model.
+- **Pydantic:** Validates data and enforces consistent, reliable contracts between the AI agents, backend, and frontend.
 
 ### Failure handling
 
@@ -126,83 +124,6 @@ There is no database. The service is stateless and reports are not stored.
 - CORS is restricted, a Content Security Policy and standard security headers are set, and API docs are disabled.
 - Client-facing errors are generic and never include stack traces.
 - User text is placed in the prompt inside delimiters and treated as data. This reduces prompt injection risk and does not remove it.
-
-## Testing
-
-No test calls OpenAI. A scripted fake model drives the real graph.
-
-```bash
-# backend
-cd backend
-python -m pytest -q
-ruff check .
-
-# frontend
-cd frontend
-npm run lint
-npm run typecheck
-npm test
-npm run build
-```
-
-At the time of writing: 103 backend tests and 31 frontend tests pass, and lint, type checks and the production build are clean. Backend tests cover the schemas and wording guards, deterministic disagreement and consensus logic, the graph (parallel fan-out, targeted reassessment, the 2-round ceiling, partial and failed runs), the LangChain adapter and the API (limits, rate limit, streaming, end marker). Frontend tests cover the NDJSON parser, terminal-event handling, the run reducer, validation and the main components.
-
-An opt-in smoke test calls the real model and prints only statuses and timings: `cd backend && python scripts/e2e.py`.
-
-## Local development
-
-Requirements: Python 3.13, Node 20 or newer, npm, git.
-
-```bash
-git clone https://github.com/shahil5z/europa-ai-governance.git
-cd europa-ai-governance
-
-# backend (terminal 1)
-cd backend
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt -r requirements-dev.txt
-cp ../.env.example .env        # then set OPENAI_API_KEY in .env
-uvicorn main:app --port 8000
-
-# frontend (terminal 2, from the repository root)
-cd frontend
-npm install
-npm run dev
-```
-
-On Windows PowerShell, create the environment with `py -3.13 -m venv .venv`, activate it with `.\.venv\Scripts\Activate.ps1` and copy the file with `Copy-Item ..\.env.example .env`. The remaining commands are the same.
-
-Open <http://localhost:3000>. In development the frontend proxies `/api/*` to `BACKEND_URL` (default `http://127.0.0.1:8000`). Without a key, `POST /api/assess` returns `503 not_configured` and the UI says so. To work on the UI without spending tokens, run `FAKE_MODE=disagreement uvicorn tests.dev_server:app --port 8000` from `backend/` (modes `happy`, `disagreement`, `partial`).
-
-### Environment variables
-
-| Variable | Default | Purpose |
-| --- | --- | --- |
-| `OPENAI_API_KEY` | none | Required. Server-side only |
-| `OPENAI_MODEL` | `gpt-4.1-mini` | Model for all agents |
-| `OPENAI_CRITIC_MODEL` | same as model | Optional stronger critic |
-| `OPENAI_TEMPERATURE` | `0.2` | 0 to 1 |
-| `CALL_TIMEOUT_SECONDS` | `45` | Per model call |
-| `RUN_DEADLINE_SECONDS` | `240` | Whole run, maximum 280 |
-| `MAX_REASSESSMENT_ROUNDS` | `1` | 0 to 2 |
-| `RATE_LIMIT_REQUESTS`, `RATE_LIMIT_WINDOW_SECONDS` | `5`, `900` | Per IP |
-| `GLOBAL_RATE_LIMIT_REQUESTS` | `60` | Per window |
-| `MAX_CONCURRENT_RUNS` | `4` | Per instance |
-| `CORS_ALLOW_ORIGINS` | localhost:3000 | Comma separated |
-| `BACKEND_URL` | `http://127.0.0.1:8000` | Frontend dev proxy only |
-| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` | Canonical URL for metadata, Open Graph, robots and sitemap |
-
-Deployment notes are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
-
-## API
-
-| Method | Path | Notes |
-| --- | --- | --- |
-| `GET` | `/api/health` | Status and model name. Never returns the key |
-| `GET` | `/api/scenarios` | The 7 demo scenarios |
-| `POST` | `/api/assess` | Body `{"description": "...", "scenario_id": "optional"}`. Responds with `application/x-ndjson` |
-
-Stream lines are `audit` events, a `ping` heartbeat every 8 s, exactly one terminal `report` or `error`, then `end` followed by 2 KB of newline padding so proxies cannot hold the final line.
 
 ## Limitations
 
