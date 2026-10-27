@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="frontend/public/logo.png" alt="EUROPA AI GOVERNANCE logo" width="200" height="200">
-</p>
-
 <h1 align="center">EUROPA AI GOVERNANCE</h1>
 
 <p align="center"><strong>Multi-Agent AI Governance &amp; Risk Intelligence Platform</strong></p>
@@ -148,8 +144,10 @@ This tool provides AI-assisted governance analysis for informational purposes an
 - Evaluation sets with labelled systems to measure agent agreement and calibration.
 - More specialist agents, for example procurement and supply chain.
 
+## Author
+
+Designed and developed by Shohrab Haque Shahil
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
-
-Portfolio project by Shahil
