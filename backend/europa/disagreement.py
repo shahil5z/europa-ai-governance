@@ -1,8 +1,7 @@
-"""Deterministic disagreement detection and reassessment planning.
+"""Disagreement detection and reassessment planning.
 
-No LLM is involved in deciding *whether* agents disagree on levels. The critic's
-issues are folded in as a second, labelled source. Disagreements keep a stable id
-so that they can be tracked across reassessment rounds and never silently vanish.
+Level disagreements are found in code. The critic's issues are added as a second
+source. Each disagreement has a stable id so it can be followed across rounds.
 """
 
 from __future__ import annotations

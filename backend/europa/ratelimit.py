@@ -1,8 +1,7 @@
-"""Best-effort in-memory rate limiting.
+"""In-memory rate limiting.
 
-State lives in process memory. On a serverless platform every instance has its own
-counters and instances come and go, so this is a courtesy limiter that blunts casual
-abuse and accidental loops. It is NOT a security boundary or a billing guard.
+Counters live in process memory, so each serverless instance has its own. This only
+slows down casual abuse and accidental loops; it is not a billing guard.
 """
 
 from __future__ import annotations

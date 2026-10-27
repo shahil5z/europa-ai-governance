@@ -66,9 +66,7 @@ def results(
     }
 
 
-# ----------------------------------------------------------------- guardrails
-
-
+# guardrails
 def test_signals_detect_high_impact_domains_and_respect_negation():
     keys = {s.key for s in detect_signals("We screen job applicants with facial recognition")}
     assert {"employment", "biometric"} <= keys
@@ -103,9 +101,7 @@ def test_fallback_plan_runs_everything():
     assert profile.decision_impact is Level.HIGH
 
 
-# ------------------------------------------------------------- disagreements
-
-
+# disagreements
 def test_no_disagreement_when_levels_are_close():
     assert detect_level_disagreements(results(risk=Level.LOW, sec=Level.MEDIUM), 0) == []
 
@@ -222,9 +218,7 @@ def test_critic_requests_come_first_in_plan():
     assert next(iter(plan)) is AgentName.GOVERNANCE
 
 
-# ----------------------------------------------------------------- consensus
-
-
+# consensus
 def statuses(**failed):
     return {
         AgentName(k): AgentRunStatus(agent=AgentName(k), status=AgentStatus.FAILED) for k in failed
@@ -297,9 +291,7 @@ def test_recommendations_sorted_and_deduped():
     assert priority and all(p in recs for p in priority)
 
 
-# --------------------------------------------------------------- rate limiter
-
-
+# rate limiter
 def test_rate_limiter_per_key_and_global():
     lim = SlidingWindowLimiter(per_key=2, global_limit=3, window_s=60)
     assert lim.check("a", now=0) is None

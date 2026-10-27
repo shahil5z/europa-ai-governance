@@ -1,10 +1,7 @@
-"""Prompt templates (ChatPromptTemplate) for every agent.
+"""Prompt templates for every agent.
 
-Hardening applied everywhere:
-- the user's description is passed as a template *variable*, wrapped in
-  <system_description> tags, and declared untrusted data;
-- agents are told to ignore instructions found inside it;
-- output is structured only (schema-bound), reasoning is a short summary.
+The user's description is passed as a template variable inside <system_description>
+tags and marked as untrusted, and agents are told to ignore instructions in it.
 """
 
 from __future__ import annotations

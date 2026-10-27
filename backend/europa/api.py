@@ -185,9 +185,8 @@ def create_app(settings: Settings | None = None, llm: StructuredLLM | None = Non
                 async for event in stream_assessment(req, settings, model):
                     yield (json.dumps(event, ensure_ascii=False) + "\n").encode()
                     if event["type"] in TERMINAL_EVENTS:
-                        # Whitespace after the final event pushes it through any proxy that
-                        # buffers small chunks. Clients ignore blank lines. Pitfall seen in a
-                        # previous project: the last event was held back and the UI hung.
+                        # Pad after the last event so proxies that buffer small chunks
+                        # flush it. The client ignores blank lines.
                         yield b'{"type":"end"}\n' + FLUSH_PADDING
             finally:
                 release()

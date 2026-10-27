@@ -142,8 +142,8 @@ export async function runAssessment(
     const out: { report: GovernanceReport | null } = { report: null };
     let reportAnnounced = false;
 
-    // The report line is terminal: the caller gets it as soon as it is parsed. We do not wait
-    // for the proxy to close the stream (a buffered or dropped tail hung a previous project).
+    // Return as soon as the report line is parsed instead of waiting for the stream to
+    // close, in case a proxy holds back the tail.
     const handle = (events: StreamEvent[]): boolean => {
       for (const ev of events) {
         if (ev.type === "audit") {

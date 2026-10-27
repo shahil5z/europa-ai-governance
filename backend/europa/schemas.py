@@ -31,9 +31,7 @@ MAX_DESCRIPTION_CHARS = 6000
 Confidence = Annotated[float, Field(ge=0.0, le=1.0)]
 
 
-# --------------------------------------------------------------------------- enums
-
-
+# enums
 class Level(StrEnum):
     """Overall level assigned by an agent or by consensus."""
 
@@ -215,8 +213,7 @@ class AuditEventType(StrEnum):
     REPORT_GENERATED = "REPORT_GENERATED"
 
 
-# ------------------------------------------------------------------------ request
-
+# request
 _CONTROL_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
 
 
@@ -245,9 +242,7 @@ class AssessmentRequest(BaseModel):
         return clean_text(value) if isinstance(value, str) else value
 
 
-# ------------------------------------------------------------------- orchestrator
-
-
+# orchestrator
 class SystemProfile(BaseModel):
     """Structured profile of the described AI system (orchestrator output)."""
 
@@ -319,9 +314,7 @@ class RoutingPlan(BaseModel):
         return ""
 
 
-# ---------------------------------------------------------------------- specialists
-
-
+# specialists
 class AgentFinding(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -405,9 +398,7 @@ SPECIALIST_SCHEMAS: dict[AgentName, type[SpecialistAssessment]] = {
 }
 
 
-# ------------------------------------------------------------------------- critic
-
-
+# critic
 class CriticIssue(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -443,9 +434,7 @@ class CriticAssessment(BaseModel):
     reassessment_requests: list[ReassessmentRequest] = Field(max_length=3)
 
 
-# ------------------------------------------------------------------ disagreements
-
-
+# disagreements
 class Disagreement(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -460,9 +449,7 @@ class Disagreement(BaseModel):
     resolution_note: str | None = None
 
 
-# ------------------------------------------------------------------ audit + status
-
-
+# audit + status
 class AuditEvent(BaseModel):
     """One structured, user-text-free entry in the audit trail."""
 
@@ -510,9 +497,7 @@ class AgentResult(BaseModel):
     adjusted_confidence: Confidence
 
 
-# ----------------------------------------------------------------------- consensus
-
-
+# consensus
 class AgentConsensusEntry(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -562,9 +547,7 @@ class ExecutiveSummary(BaseModel):
         return self
 
 
-# --------------------------------------------------------------------------- report
-
-
+# report
 class ReportMeta(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -617,8 +600,7 @@ class ErrorBody(BaseModel):
     retry_after_seconds: int | None = None
 
 
-# ------------------------------------------------------------------ wording guard
-
+# wording guard
 _ASSERTIVE_LEGAL = re.compile(
     r"\b(?:"
     r"(?:is|are|was|were)\s+(?:definitely\s+|clearly\s+|certainly\s+|legally\s+)?"

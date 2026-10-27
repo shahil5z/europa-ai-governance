@@ -1,9 +1,7 @@
-"""Deterministic, explainable consensus over structured agent results.
+"""Consensus over the specialist results, computed in code with no model call.
 
-No model call is involved. Inputs: validated specialist results, critic confidence
-adjustments, disagreements, failures and the orchestrator's profile. Every rule that
-changes the outcome is appended to `rules_applied` so the table in the report can
-explain the result.
+Every rule that changes the outcome is added to `rules_applied`, so the report can
+explain how the overall level was reached.
 """
 
 from __future__ import annotations

@@ -1,5 +1,5 @@
 # Runtime dependencies (also used by the Vercel Python build).
-# Versions are ranges verified against the versions used in the test runs.
+# Version ranges follow the versions the tests were run with.
 fastapi>=0.162,<1
 uvicorn>=0.54,<1
 pydantic>=2.14,<3

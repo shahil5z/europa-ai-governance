@@ -1,8 +1,6 @@
-"""Model access: a small protocol plus the LangChain / OpenAI implementation.
+"""Model access: a small protocol and the LangChain / OpenAI implementation.
 
-Agents depend only on `StructuredLLM`. Production uses `LangChainStructuredLLM`
-(ChatPromptTemplate | ChatOpenAI.with_structured_output). Tests inject fakes, so
-no test ever calls OpenAI.
+Agents only depend on `StructuredLLM`, so tests can pass a fake and never call OpenAI.
 """
 
 from __future__ import annotations

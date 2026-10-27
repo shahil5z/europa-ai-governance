@@ -1,16 +1,12 @@
-"""The LangGraph workflow.
+"""LangGraph workflow for one assessment run.
 
-Topology (see README for the diagram):
+    START -> orchestrate -> specialist (parallel) -> review
+    review -> specialist (reassess only the agents in disagreement, bounded) -> review
+    review -> consensus -> summarize -> finalize -> END
 
-    START -> orchestrate --(Send x N)--> specialist (parallel) --> review
-    review --(Send x M, bounded)--> specialist (targeted reassessment) --> review
-    review --(no pending work)--> consensus -> summarize -> finalize -> END
-
-* `GraphState` is typed. `results` and `statuses` use a dict-merge reducer so that
-  parallel specialist branches can write concurrently.
-* Services that must not live in state (LLM, audit log, deadline) travel in
-  `config["configurable"]["ctx"]`.
-* The loop is bounded by `settings.max_reassessment_rounds` (0 to 2).
+`results` and `statuses` use a dict-merge reducer so parallel specialists can write
+at the same time. The LLM, audit log and deadline are passed through
+`config["configurable"]["ctx"]` instead of living in state.
 """
 
 from __future__ import annotations
@@ -95,9 +91,7 @@ def _ctx(config: RunnableConfig) -> RunContext:
     return config["configurable"]["ctx"]
 
 
-# ------------------------------------------------------------------------- nodes
-
-
+# nodes
 async def orchestrate_node(state: GraphState, config: RunnableConfig) -> dict[str, Any]:
     ctx = _ctx(config)
     profile, plan, status = await run_orchestrator(ctx, state["description"])
@@ -409,9 +403,7 @@ def finalize_node(state: GraphState, config: RunnableConfig) -> dict[str, Any]:
     return {"report": report}
 
 
-# ------------------------------------------------------------------------- graph
-
-
+# graph
 @lru_cache(maxsize=1)
 def build_graph():
     g = StateGraph(GraphState)

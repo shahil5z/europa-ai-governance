@@ -1,8 +1,7 @@
-"""Small curated knowledge module for the Governance agent.
+"""Short list of regulatory concepts for the Governance agent.
 
-This is static text shipped in code: nothing is fetched at runtime, so there is no
-network surface. It is a navigation aid for the model, not a legal source. All
-entries are phrased as concepts that may be relevant, never as determinations.
+Static text, nothing is fetched at runtime. It is a hint for the model, not a legal
+source, and entries are worded as concepts that may be relevant.
 """
 
 from __future__ import annotations

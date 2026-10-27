@@ -147,9 +147,7 @@ async def run_structured[T: BaseModel](
     return Outcome(None, attempts, duration, code)
 
 
-# ----------------------------------------------------------------- orchestrator
-
-
+# orchestrator
 async def run_orchestrator(
     ctx: RunContext, description: str
 ) -> tuple[SystemProfile, RoutingPlan, AgentRunStatus]:
@@ -206,9 +204,7 @@ async def run_orchestrator(
     return profile, plan, status
 
 
-# ------------------------------------------------------------------ specialists
-
-
+# specialists
 def _result_brief(result: AgentResult) -> dict[str, Any]:
     a = result.assessment
     return {
@@ -314,9 +310,7 @@ async def run_specialist(
     return result, status
 
 
-# ----------------------------------------------------------------------- critic
-
-
+# critic
 async def run_critic(
     ctx: RunContext,
     *,
@@ -370,9 +364,7 @@ async def run_critic(
     )
 
 
-# --------------------------------------------------------------------- summary
-
-
+# summary
 async def run_summary(
     ctx: RunContext,
     *,

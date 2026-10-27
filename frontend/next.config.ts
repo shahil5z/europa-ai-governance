@@ -29,13 +29,12 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
-  // Logos are pre-sized; the image optimizer route is not used (it 404s under Vercel Services).
+  // Images are pre-sized, so the Next.js image optimizer is not used.
   images: { unoptimized: true },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
-  // Local development only: proxy /api to uvicorn. On Vercel the root vercel.json
-  // routes /api/* to the FastAPI service, so no rewrite is needed (or wanted).
+  // Dev only: proxy /api to uvicorn. On Vercel, vercel.json routes /api/* to the API service.
   async rewrites() {
     if (process.env.VERCEL) return [];
     const backend = process.env.BACKEND_URL ?? "http://127.0.0.1:8000";

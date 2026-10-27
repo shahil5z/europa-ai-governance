@@ -1,11 +1,9 @@
-"""Deterministic guardrails around the orchestrator's LLM routing proposal.
+"""Guardrails around the orchestrator's routing proposal.
 
-The LLM proposes a profile and which specialists to run. Code then:
-1. detects high-signal keywords in the description (no model involved),
-2. raises the decision-impact floor where those signals justify it,
-3. forces specialists on whenever the situation requires them,
-4. always keeps RISK and SECURITY.
-Every override is recorded and shown in the report.
+The model proposes a profile and which specialists to run. Code then looks for
+high-signal keywords, raises the decision-impact floor when they justify it, forces
+specialists on when needed and always keeps RISK and SECURITY. Overrides are
+recorded and shown in the report.
 """
 
 from __future__ import annotations
