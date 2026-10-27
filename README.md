@@ -145,7 +145,7 @@ npm test
 npm run build
 ```
 
-At the time of writing: 103 backend tests and 30 frontend tests pass, and lint, type checks and the production build are clean. Backend tests cover the schemas and wording guards, deterministic disagreement and consensus logic, the graph (parallel fan-out, targeted reassessment, the 2-round ceiling, partial and failed runs), the LangChain adapter and the API (limits, rate limit, streaming, end marker). Frontend tests cover the NDJSON parser, terminal-event handling, the run reducer, validation and the main components.
+At the time of writing: 103 backend tests and 31 frontend tests pass, and lint, type checks and the production build are clean. Backend tests cover the schemas and wording guards, deterministic disagreement and consensus logic, the graph (parallel fan-out, targeted reassessment, the 2-round ceiling, partial and failed runs), the LangChain adapter and the API (limits, rate limit, streaming, end marker). Frontend tests cover the NDJSON parser, terminal-event handling, the run reducer, validation and the main components.
 
 An opt-in smoke test calls the real model and prints only statuses and timings: `cd backend && python scripts/e2e.py`.
 

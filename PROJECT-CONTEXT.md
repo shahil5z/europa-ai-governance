@@ -51,7 +51,7 @@ Key server-side only. Pydantic input limits (30 to 6000 chars, control chars str
 Released. Maintenance only.
 
 ## Verification status
-- Backend pytest: 103 passed. `ruff check`: clean. Frontend: eslint, `tsc --noEmit` clean, vitest 30 passed, `next build` succeeds (level 2).
+- Backend pytest: 103 passed. `ruff check`: clean. Frontend: eslint, `tsc --noEmit` clean, vitest 31 passed, `next build` succeeds (level 2).
 - Production (level 4): landing at 1440, 820 and 390 px has no console errors and no horizontal overflow; axe reports no violations on hero and report; canonical, Open Graph, robots and sitemap use the production URL; footer contains "Portfolio project by Shahil".
 - Real model on production through the browser: 3 runs (desktop, mobile, one for the README screenshot), reports in about 15 to 17 s, status COMPLETE.
 - NOT VERIFIED: Safari and Firefox rendering, screen reader behaviour (markup reviewed only), cold start latency, behaviour under sustained load.

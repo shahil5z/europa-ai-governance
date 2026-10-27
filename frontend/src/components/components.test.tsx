@@ -88,4 +88,11 @@ describe("AgentNetwork and Footer", () => {
     render(<Footer />);
     expect(screen.getByText(/portfolio project by shahil/i)).toBeInTheDocument();
   });
+  it("links to the source repository safely", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: "View source on GitHub" });
+    expect(link).toHaveAttribute("href", "https://github.com/shahil5z/europa-ai-governance");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  });
 });
