@@ -37,21 +37,21 @@ Key server-side only. Pydantic input limits (30 to 6000 chars, control chars str
 - Run: `uvicorn main:app --port 8000` (backend), `npm run dev` (frontend, proxies `/api` to `BACKEND_URL`).
 - Real smoke: `python backend/scripts/e2e.py` (uses the key from env, prints no secrets).
 
-## Deploy platform and design (PLANNED, Phase 2)
-Single Vercel Hobby project, Git-connected, Vercel Services (Beta): `web` (`frontend/`, nextjs) and `api` (`backend/`, `main:app`), rewrites `/api/(.*)` to `api`, everything else to `web`. Same origin, so no CORS in production. Aligned with the earlier working config in `/workspace/nexus/vercel.json` (OBSERVED, level 1).
-Constraints and decisions:
-- `images.unoptimized: true`: `/_next/image` is not served under Services (from the vercel-services guidance, NOT VERIFIED by a deploy).
-- No `maxDuration` is set. The run is designed to finish well under 300 s; Fluid default duration is presumed 300 s (NOT VERIFIED on this account).
-- Streaming pitfall inherited from an earlier project (final event buffered or dropped on Vercel, UI stuck on RUNNING): every event is flushed, heartbeats every 8 s, `no-store, no-transform`, `X-Accel-Buffering: no`, an explicit `end` event plus 2 KB padding after the terminal event; the client returns the moment the report line parses, parses a final unterminated line, and raises `report_lost` or `interrupted` if the report never arrives. Verified locally through `next start` (OBSERVED, level 3). NOT VERIFIED on Vercel.
+## Deployment (LIVE)
+- GitHub: https://github.com/shahil5z/europa-ai-governance (public, branch `main`).
+- Live: https://europa-ai-governance.vercel.app (Vercel project `europa-ai-governance`, Git-connected, framework preset `services`).
+- Vercel Services (Beta): `web` (`frontend/`, nextjs) and `api` (`backend/`, `main:app`), rewrites `/api/(.*)` to `api`, the rest to `web`. Same origin, no CORS needed in production.
+- Env: `OPENAI_API_KEY` (sensitive, production), `NEXT_PUBLIC_SITE_URL` (production).
+- Lesson learned: a `pyproject.toml` without `dependencies` makes Vercel skip `requirements.txt`, so the API failed with `No module named 'fastapi'`. The backend has no `pyproject.toml`; pytest and ruff settings live in `pytest.ini` and `ruff.toml`.
+- Streaming on Vercel (MEASURED, level 4): `application/x-ndjson`, `no-store, no-transform`, events arrive incrementally, report arrives and the UI leaves RUNNING.
 - Rate limiting is per instance in memory and resets on cold start; use an OpenAI spend limit.
+- `images.unoptimized: true` is kept so the app does not depend on the image optimizer.
 
 ## Current task
-Phase 1 (build and local verification) complete. Phase 2 (GitHub push and Vercel deploy) not started and requires explicit user approval.
+Released. Maintenance only.
 
 ## Verification status
-- Backend pytest: 103 passed (MEASURED, level 2). `ruff check`: clean.
-- Frontend: `eslint` clean, `tsc --noEmit` clean, vitest 30 passed, `next build` succeeds (level 2).
-- Real model, backend only: 1 end-to-end run, 26.4 s, all 7 agents plus summary OK (MEASURED, level 3).
-- Real model through the UI (Playwright, `next start` proxy to uvicorn): 1 run, report in 14.5 s, status COMPLETE, overall HIGH (MEASURED, level 3).
-- Responsive checks at 1440, 820 and 390 px: no horizontal overflow, no console errors (level 3).
-- NOT VERIFIED: Vercel Services deploy, streaming behaviour on Vercel, Hobby duration and cold start, CSP with Next inline scripts in production, screen reader behaviour (only markup reviewed), Safari and Firefox rendering.
+- Backend pytest: 103 passed. `ruff check`: clean. Frontend: eslint, `tsc --noEmit` clean, vitest 30 passed, `next build` succeeds (level 2).
+- Production (level 4): landing at 1440, 820 and 390 px has no console errors and no horizontal overflow; axe reports no violations on hero and report; canonical, Open Graph, robots and sitemap use the production URL; footer contains "Portfolio project by Shahil".
+- Real model on production through the browser: 3 runs (desktop, mobile, one for the README screenshot), reports in about 15 to 17 s, status COMPLETE.
+- NOT VERIFIED: Safari and Firefox rendering, screen reader behaviour (markup reviewed only), cold start latency, behaviour under sustained load.
