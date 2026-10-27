@@ -1,0 +1,873 @@
+{
+ "report_id": "6332a2ae17e04292b783e30d17773225",
+ "status": "COMPLETE",
+ "created_at": "2026-10-27T01:41:38.804642Z",
+ "profile": {
+  "domain": "employment",
+  "purpose_summary": "Screens job applications and ranks candidates automatically.",
+  "decision_impact": "HIGH",
+  "data_types": [
+   "PERSONAL"
+  ],
+  "autonomy_level": "HUMAN_APPROVES_ACTIONS",
+  "affected_people": [
+   "Job applicants"
+  ],
+  "uses_external_tools": false,
+  "user_facing": true,
+  "missing_information": []
+ },
+ "routing": {
+  "decisions": [
+   {
+    "agent": "RISK",
+    "run": true,
+    "focus": "Focus on risk aspects of this system.",
+    "justification": "Relevant to the described use case."
+   },
+   {
+    "agent": "DATA_GOVERNANCE",
+    "run": true,
+    "focus": "Focus on data_governance aspects of this system.",
+    "justification": "Relevant to the described use case."
+   },
+   {
+    "agent": "SECURITY",
+    "run": true,
+    "focus": "Focus on security aspects of this system.",
+    "justification": "Relevant to the described use case."
+   },
+   {
+    "agent": "HUMAN_OVERSIGHT",
+    "run": true,
+    "focus": "Focus on human_oversight aspects of this system.",
+    "justification": "Relevant to the described use case."
+   },
+   {
+    "agent": "GOVERNANCE",
+    "run": true,
+    "focus": "Focus on governance aspects of this system.",
+    "justification": "Relevant to the described use case."
+   }
+  ],
+  "overrides": [],
+  "signals": [
+   "signal: employment or worker management"
+  ],
+  "source": "LLM_WITH_GUARDRAILS"
+ },
+ "results": [
+  {
+   "agent": "RISK",
+   "assessment": {
+    "summary": "Overall HIGH from this domain perspective: Biased outcomes.",
+    "level": "HIGH",
+    "confidence": 0.8,
+    "findings": [
+     {
+      "title": "Biased outcomes",
+      "severity": "HIGH",
+      "confidence": 0.8,
+      "explanation": "Biased outcomes: explanation grounded in the provided description.",
+      "evidence": "Derived from the described data flow and decision process.",
+      "recommendation": "Mitigate: biased outcomes through documented controls."
+     }
+    ],
+    "assumptions_and_gaps": [
+     "Deployment details were not described."
+    ],
+    "likelihood": "HIGH",
+    "impact": "HIGH",
+    "potential_harms": [
+     "Unfair treatment of affected people"
+    ]
+   },
+   "revision": 1,
+   "level_history": [
+    "LOW",
+    "HIGH"
+   ],
+   "adjusted_confidence": 0.8
+  },
+  {
+   "agent": "DATA_GOVERNANCE",
+   "assessment": {
+    "summary": "Overall MEDIUM from this domain perspective: Excessive data retention.",
+    "level": "MEDIUM",
+    "confidence": 0.8,
+    "findings": [
+     {
+      "title": "Excessive data retention",
+      "severity": "MEDIUM",
+      "confidence": 0.8,
+      "explanation": "Excessive data retention: explanation grounded in the provided description.",
+      "evidence": "Derived from the described data flow and decision process.",
+      "recommendation": "Mitigate: excessive data retention through documented controls."
+     }
+    ],
+    "assumptions_and_gaps": [
+     "Deployment details were not described."
+    ],
+    "data_categories": [
+     "Personal data"
+    ],
+    "special_category_data_likely": false,
+    "lawful_basis_considerations": [
+     "Purpose limitation requires review"
+    ],
+    "minimisation_and_retention": "Retention period is not specified and should be limited."
+   },
+   "revision": 0,
+   "level_history": [
+    "MEDIUM"
+   ],
+   "adjusted_confidence": 0.8
+  },
+  {
+   "agent": "SECURITY",
+   "assessment": {
+    "summary": "Overall HIGH from this domain perspective: Prompt injection exposure.",
+    "level": "HIGH",
+    "confidence": 0.8,
+    "findings": [
+     {
+      "title": "Prompt injection exposure",
+      "severity": "HIGH",
+      "confidence": 0.8,
+      "explanation": "Prompt injection exposure: explanation grounded in the provided description.",
+      "evidence": "Derived from the described data flow and decision process.",
+      "recommendation": "Mitigate: prompt injection exposure through documented controls."
+     }
+    ],
+    "assumptions_and_gaps": [
+     "Deployment details were not described."
+    ],
+    "threat_categories": [
+     "PROMPT_INJECTION"
+    ],
+    "attack_surface_notes": "Untrusted text reaches the model without isolation."
+   },
+   "revision": 1,
+   "level_history": [
+    "HIGH",
+    "HIGH"
+   ],
+   "adjusted_confidence": 0.8
+  },
+  {
+   "agent": "HUMAN_OVERSIGHT",
+   "assessment": {
+    "summary": "Overall MEDIUM from this domain perspective: Weak override path.",
+    "level": "MEDIUM",
+    "confidence": 0.8,
+    "findings": [
+     {
+      "title": "Weak override path",
+      "severity": "MEDIUM",
+      "confidence": 0.8,
+      "explanation": "Weak override path: explanation grounded in the provided description.",
+      "evidence": "Derived from the described data flow and decision process.",
+      "recommendation": "Mitigate: weak override path through documented controls."
+     }
+    ],
+    "assumptions_and_gaps": [
+     "Deployment details were not described."
+    ],
+    "oversight_model": "HUMAN_ON_THE_LOOP",
+    "oversight_gaps": [
+     "No documented override procedure"
+    ],
+    "contestability_described": false,
+    "accountability_owner_described": false
+   },
+   "revision": 0,
+   "level_history": [
+    "MEDIUM"
+   ],
+   "adjusted_confidence": 0.8
+  },
+  {
+   "agent": "GOVERNANCE",
+   "assessment": {
+    "summary": "Overall MEDIUM from this domain perspective: Potential high-risk use area.",
+    "level": "MEDIUM",
+    "confidence": 0.8,
+    "findings": [
+     {
+      "title": "Potential high-risk use area",
+      "severity": "MEDIUM",
+      "confidence": 0.8,
+      "explanation": "Potential high-risk use area: explanation grounded in the provided description.",
+      "evidence": "Derived from the described data flow and decision process.",
+      "recommendation": "Mitigate: potential high-risk use area through documented controls."
+     }
+    ],
+    "assumptions_and_gaps": [
+     "Deployment details were not described."
+    ],
+    "potential_ai_act_tier": "POTENTIAL_HIGH_RISK",
+    "tier_rationale": "Based on the provided description, this appears relevant to a listed area.",
+    "frameworks": [
+     {
+      "name": "EU AI Act (high-risk concepts)",
+      "relevance": "POTENTIALLY_APPLICABLE",
+      "note": "Requires legal review to confirm applicability."
+     }
+    ],
+    "requires_legal_review": true
+   },
+   "revision": 0,
+   "level_history": [
+    "MEDIUM"
+   ],
+   "adjusted_confidence": 0.8
+  }
+ ],
+ "critic": {
+  "summary": "Reviewed the specialist outputs for consistency and support.",
+  "confidence": 0.8,
+  "issues": [],
+  "missing_risks": [],
+  "confidence_adjustments": [],
+  "reassessment_requests": []
+ },
+ "disagreements": [
+  {
+   "id": "level-spread",
+   "kind": "LEVEL_SPREAD",
+   "source": "DETERMINISTIC",
+   "agents": [
+    "RISK",
+    "SECURITY"
+   ],
+   "description": "Agent levels differ by 2 steps (LOW to HIGH).",
+   "levels": {
+    "RISK": "LOW",
+    "DATA_GOVERNANCE": "MEDIUM",
+    "SECURITY": "HIGH",
+    "HUMAN_OVERSIGHT": "MEDIUM",
+    "GOVERNANCE": "MEDIUM"
+   },
+   "status": "RESOLVED",
+   "round_detected": 0,
+   "resolution_note": "No longer detected after targeted reassessment."
+  }
+ ],
+ "consensus": {
+  "overall_level": "HIGH",
+  "overall_confidence": 0.8,
+  "weighted_score": 2.5,
+  "entries": [
+   {
+    "agent": "RISK",
+    "level": "HIGH",
+    "confidence": 0.8,
+    "adjusted_confidence": 0.8,
+    "base_weight": 0.28,
+    "effective_weight": 0.22400000000000003,
+    "note": "reassessed (LOW to HIGH)"
+   },
+   {
+    "agent": "DATA_GOVERNANCE",
+    "level": "MEDIUM",
+    "confidence": 0.8,
+    "adjusted_confidence": 0.8,
+    "base_weight": 0.16,
+    "effective_weight": 0.128,
+    "note": null
+   },
+   {
+    "agent": "SECURITY",
+    "level": "HIGH",
+    "confidence": 0.8,
+    "adjusted_confidence": 0.8,
+    "base_weight": 0.22,
+    "effective_weight": 0.17600000000000002,
+    "note": "reassessed (HIGH to HIGH)"
+   },
+   {
+    "agent": "HUMAN_OVERSIGHT",
+    "level": "MEDIUM",
+    "confidence": 0.8,
+    "adjusted_confidence": 0.8,
+    "base_weight": 0.16,
+    "effective_weight": 0.128,
+    "note": null
+   },
+   {
+    "agent": "GOVERNANCE",
+    "level": "MEDIUM",
+    "confidence": 0.8,
+    "adjusted_confidence": 0.8,
+    "base_weight": 0.18,
+    "effective_weight": 0.144,
+    "note": null
+   }
+  ],
+  "rules_applied": [
+   "Weighted score 2.50 maps to HIGH."
+  ],
+  "unresolved_disagreements": 0,
+  "method": "Weighted mean of agent levels (LOW=1 to CRITICAL=4). Weight = base domain weight x confidence after critic adjustment. Precautionary floors apply. Overall confidence is the base-weighted mean of adjusted confidences, reduced for unresolved disagreements and failed agents."
+ },
+ "executive_summary": {
+  "text": "Based on the provided description, the system appears to carry elevated risk that requires legal review and human oversight improvements.",
+  "key_points": [
+   "Review oversight design",
+   "Limit data retention"
+  ]
+ },
+ "recommendations": [
+  {
+   "agent": "RISK",
+   "title": "Biased outcomes",
+   "text": "Mitigate: biased outcomes through documented controls.",
+   "severity": "HIGH",
+   "confidence": 0.8,
+   "priority_rank": 1
+  },
+  {
+   "agent": "SECURITY",
+   "title": "Prompt injection exposure",
+   "text": "Mitigate: prompt injection exposure through documented controls.",
+   "severity": "HIGH",
+   "confidence": 0.8,
+   "priority_rank": 2
+  },
+  {
+   "agent": "DATA_GOVERNANCE",
+   "title": "Excessive data retention",
+   "text": "Mitigate: excessive data retention through documented controls.",
+   "severity": "MEDIUM",
+   "confidence": 0.8,
+   "priority_rank": 3
+  },
+  {
+   "agent": "GOVERNANCE",
+   "title": "Potential high-risk use area",
+   "text": "Mitigate: potential high-risk use area through documented controls.",
+   "severity": "MEDIUM",
+   "confidence": 0.8,
+   "priority_rank": 4
+  },
+  {
+   "agent": "HUMAN_OVERSIGHT",
+   "title": "Weak override path",
+   "text": "Mitigate: weak override path through documented controls.",
+   "severity": "MEDIUM",
+   "confidence": 0.8,
+   "priority_rank": 5
+  }
+ ],
+ "priority_actions": [
+  {
+   "agent": "RISK",
+   "title": "Biased outcomes",
+   "text": "Mitigate: biased outcomes through documented controls.",
+   "severity": "HIGH",
+   "confidence": 0.8,
+   "priority_rank": 1
+  },
+  {
+   "agent": "SECURITY",
+   "title": "Prompt injection exposure",
+   "text": "Mitigate: prompt injection exposure through documented controls.",
+   "severity": "HIGH",
+   "confidence": 0.8,
+   "priority_rank": 2
+  },
+  {
+   "agent": "DATA_GOVERNANCE",
+   "title": "Excessive data retention",
+   "text": "Mitigate: excessive data retention through documented controls.",
+   "severity": "MEDIUM",
+   "confidence": 0.8,
+   "priority_rank": 3
+  }
+ ],
+ "agent_statuses": [
+  {
+   "agent": "ORCHESTRATOR",
+   "status": "COMPLETE",
+   "attempts": 1,
+   "revisions": 0,
+   "duration_ms": 0,
+   "level": "HIGH",
+   "confidence": null,
+   "error_code": null,
+   "note": null
+  },
+  {
+   "agent": "RISK",
+   "status": "COMPLETE",
+   "attempts": 2,
+   "revisions": 1,
+   "duration_ms": 0,
+   "level": "HIGH",
+   "confidence": 0.8,
+   "error_code": null,
+   "note": null
+  },
+  {
+   "agent": "DATA_GOVERNANCE",
+   "status": "COMPLETE",
+   "attempts": 1,
+   "revisions": 0,
+   "duration_ms": 0,
+   "level": "MEDIUM",
+   "confidence": 0.8,
+   "error_code": null,
+   "note": null
+  },
+  {
+   "agent": "SECURITY",
+   "status": "COMPLETE",
+   "attempts": 2,
+   "revisions": 1,
+   "duration_ms": 0,
+   "level": "HIGH",
+   "confidence": 0.8,
+   "error_code": null,
+   "note": null
+  },
+  {
+   "agent": "HUMAN_OVERSIGHT",
+   "status": "COMPLETE",
+   "attempts": 1,
+   "revisions": 0,
+   "duration_ms": 0,
+   "level": "MEDIUM",
+   "confidence": 0.8,
+   "error_code": null,
+   "note": null
+  },
+  {
+   "agent": "GOVERNANCE",
+   "status": "COMPLETE",
+   "attempts": 1,
+   "revisions": 0,
+   "duration_ms": 0,
+   "level": "MEDIUM",
+   "confidence": 0.8,
+   "error_code": null,
+   "note": null
+  },
+  {
+   "agent": "CRITIC",
+   "status": "COMPLETE",
+   "attempts": 1,
+   "revisions": 1,
+   "duration_ms": 0,
+   "level": null,
+   "confidence": 0.8,
+   "error_code": null,
+   "note": null
+  }
+ ],
+ "audit_trail": [
+  {
+   "seq": 1,
+   "ts": "2026-10-27T01:41:38.788596Z",
+   "type": "ASSESSMENT_STARTED",
+   "message": "Assessment started",
+   "agent": null,
+   "status": null,
+   "round": 0,
+   "data": {
+    "description_chars": 76,
+    "max_reassessment_rounds": 1
+   }
+  },
+  {
+   "seq": 2,
+   "ts": "2026-10-27T01:41:38.796523Z",
+   "type": "AGENT_STARTED",
+   "message": "Orchestrator agent started",
+   "agent": "ORCHESTRATOR",
+   "status": "RUNNING",
+   "round": 0,
+   "data": {}
+  },
+  {
+   "seq": 3,
+   "ts": "2026-10-27T01:41:38.796768Z",
+   "type": "ORCHESTRATION_COMPLETED",
+   "message": "Orchestrator produced the system profile",
+   "agent": "ORCHESTRATOR",
+   "status": "COMPLETE",
+   "round": 0,
+   "data": {
+    "domain": "employment",
+    "decision_impact": "HIGH"
+   }
+  },
+  {
+   "seq": 4,
+   "ts": "2026-10-27T01:41:38.796791Z",
+   "type": "ROUTING_DECIDED",
+   "message": "Routing decided: 5 specialist(s) selected",
+   "agent": "ORCHESTRATOR",
+   "status": null,
+   "round": 0,
+   "data": {
+    "selected": [
+     "RISK",
+     "DATA_GOVERNANCE",
+     "SECURITY",
+     "HUMAN_OVERSIGHT",
+     "GOVERNANCE"
+    ],
+    "skipped": [],
+    "guardrail_overrides": 0,
+    "source": "LLM_WITH_GUARDRAILS"
+   }
+  },
+  {
+   "seq": 5,
+   "ts": "2026-10-27T01:41:38.798628Z",
+   "type": "AGENT_STARTED",
+   "message": "Risk Assessment agent started",
+   "agent": "RISK",
+   "status": "RUNNING",
+   "round": 0,
+   "data": {}
+  },
+  {
+   "seq": 6,
+   "ts": "2026-10-27T01:41:38.798958Z",
+   "type": "AGENT_COMPLETED",
+   "message": "Risk Assessment agent completed: LOW",
+   "agent": "RISK",
+   "status": "COMPLETE",
+   "round": 0,
+   "data": {
+    "level": "LOW",
+    "confidence": 0.8,
+    "findings": 1,
+    "revision": 0
+   }
+  },
+  {
+   "seq": 7,
+   "ts": "2026-10-27T01:41:38.798988Z",
+   "type": "AGENT_STARTED",
+   "message": "Data Governance agent started",
+   "agent": "DATA_GOVERNANCE",
+   "status": "RUNNING",
+   "round": 0,
+   "data": {}
+  },
+  {
+   "seq": 8,
+   "ts": "2026-10-27T01:41:38.799123Z",
+   "type": "AGENT_COMPLETED",
+   "message": "Data Governance agent completed: MEDIUM",
+   "agent": "DATA_GOVERNANCE",
+   "status": "COMPLETE",
+   "round": 0,
+   "data": {
+    "level": "MEDIUM",
+    "confidence": 0.8,
+    "findings": 1,
+    "revision": 0
+   }
+  },
+  {
+   "seq": 9,
+   "ts": "2026-10-27T01:41:38.799144Z",
+   "type": "AGENT_STARTED",
+   "message": "Security agent started",
+   "agent": "SECURITY",
+   "status": "RUNNING",
+   "round": 0,
+   "data": {}
+  },
+  {
+   "seq": 10,
+   "ts": "2026-10-27T01:41:38.799247Z",
+   "type": "AGENT_COMPLETED",
+   "message": "Security agent completed: HIGH",
+   "agent": "SECURITY",
+   "status": "COMPLETE",
+   "round": 0,
+   "data": {
+    "level": "HIGH",
+    "confidence": 0.8,
+    "findings": 1,
+    "revision": 0
+   }
+  },
+  {
+   "seq": 11,
+   "ts": "2026-10-27T01:41:38.799264Z",
+   "type": "AGENT_STARTED",
+   "message": "Human Oversight agent started",
+   "agent": "HUMAN_OVERSIGHT",
+   "status": "RUNNING",
+   "round": 0,
+   "data": {}
+  },
+  {
+   "seq": 12,
+   "ts": "2026-10-27T01:41:38.799371Z",
+   "type": "AGENT_COMPLETED",
+   "message": "Human Oversight agent completed: MEDIUM",
+   "agent": "HUMAN_OVERSIGHT",
+   "status": "COMPLETE",
+   "round": 0,
+   "data": {
+    "level": "MEDIUM",
+    "confidence": 0.8,
+    "findings": 1,
+    "revision": 0
+   }
+  },
+  {
+   "seq": 13,
+   "ts": "2026-10-27T01:41:38.799387Z",
+   "type": "AGENT_STARTED",
+   "message": "Governance agent started",
+   "agent": "GOVERNANCE",
+   "status": "RUNNING",
+   "round": 0,
+   "data": {}
+  },
+  {
+   "seq": 14,
+   "ts": "2026-10-27T01:41:38.799505Z",
+   "type": "AGENT_COMPLETED",
+   "message": "Governance agent completed: MEDIUM",
+   "agent": "GOVERNANCE",
+   "status": "COMPLETE",
+   "round": 0,
+   "data": {
+    "level": "MEDIUM",
+    "confidence": 0.8,
+    "findings": 1,
+    "revision": 0
+   }
+  },
+  {
+   "seq": 15,
+   "ts": "2026-10-27T01:41:38.800188Z",
+   "type": "CRITIC_TRIGGERED",
+   "message": "Critic review 1 triggered over 5 specialist result(s)",
+   "agent": "CRITIC",
+   "status": "RUNNING",
+   "round": 0,
+   "data": {
+    "pass_number": 1
+   }
+  },
+  {
+   "seq": 16,
+   "ts": "2026-10-27T01:41:38.800279Z",
+   "type": "AGENT_STARTED",
+   "message": "Critic agent started",
+   "agent": "CRITIC",
+   "status": "RUNNING",
+   "round": 0,
+   "data": {}
+  },
+  {
+   "seq": 17,
+   "ts": "2026-10-27T01:41:38.800344Z",
+   "type": "AGENT_COMPLETED",
+   "message": "Critic review 1 completed: 0 issue(s)",
+   "agent": "CRITIC",
+   "status": "COMPLETE",
+   "round": 0,
+   "data": {
+    "issues": 0,
+    "reassessment_requests": 0,
+    "pass_number": 1
+   }
+  },
+  {
+   "seq": 18,
+   "ts": "2026-10-27T01:41:38.800397Z",
+   "type": "DISAGREEMENT_DETECTED",
+   "message": "Disagreement detected: LEVEL_SPREAD",
+   "agent": null,
+   "status": null,
+   "round": 0,
+   "data": {
+    "disagreement_id": "level-spread",
+    "kind": "LEVEL_SPREAD",
+    "source": "DETERMINISTIC",
+    "agents": [
+     "RISK",
+     "SECURITY"
+    ]
+   }
+  },
+  {
+   "seq": 19,
+   "ts": "2026-10-27T01:41:38.800437Z",
+   "type": "REASSESSMENT_TRIGGERED",
+   "message": "Reassessment round 1 triggered for 2 agent(s)",
+   "agent": null,
+   "status": null,
+   "round": 1,
+   "data": {
+    "agents": [
+     "RISK",
+     "SECURITY"
+    ]
+   }
+  },
+  {
+   "seq": 20,
+   "ts": "2026-10-27T01:41:38.801242Z",
+   "type": "AGENT_STARTED",
+   "message": "Risk Assessment agent reassessing",
+   "agent": "RISK",
+   "status": "REASSESSING",
+   "round": 1,
+   "data": {}
+  },
+  {
+   "seq": 21,
+   "ts": "2026-10-27T01:41:38.801377Z",
+   "type": "AGENT_COMPLETED",
+   "message": "Risk Assessment agent completed: HIGH",
+   "agent": "RISK",
+   "status": "COMPLETE",
+   "round": 1,
+   "data": {
+    "level": "HIGH",
+    "confidence": 0.8,
+    "findings": 1,
+    "revision": 1
+   }
+  },
+  {
+   "seq": 22,
+   "ts": "2026-10-27T01:41:38.801416Z",
+   "type": "AGENT_STARTED",
+   "message": "Security agent reassessing",
+   "agent": "SECURITY",
+   "status": "REASSESSING",
+   "round": 1,
+   "data": {}
+  },
+  {
+   "seq": 23,
+   "ts": "2026-10-27T01:41:38.801505Z",
+   "type": "AGENT_COMPLETED",
+   "message": "Security agent completed: HIGH",
+   "agent": "SECURITY",
+   "status": "COMPLETE",
+   "round": 1,
+   "data": {
+    "level": "HIGH",
+    "confidence": 0.8,
+    "findings": 1,
+    "revision": 1
+   }
+  },
+  {
+   "seq": 24,
+   "ts": "2026-10-27T01:41:38.801978Z",
+   "type": "CRITIC_TRIGGERED",
+   "message": "Critic review 2 triggered over 5 specialist result(s)",
+   "agent": "CRITIC",
+   "status": "RUNNING",
+   "round": 1,
+   "data": {
+    "pass_number": 2
+   }
+  },
+  {
+   "seq": 25,
+   "ts": "2026-10-27T01:41:38.802042Z",
+   "type": "AGENT_STARTED",
+   "message": "Critic agent reassessing",
+   "agent": "CRITIC",
+   "status": "REASSESSING",
+   "round": 1,
+   "data": {}
+  },
+  {
+   "seq": 26,
+   "ts": "2026-10-27T01:41:38.802104Z",
+   "type": "AGENT_COMPLETED",
+   "message": "Critic review 2 completed: 0 issue(s)",
+   "agent": "CRITIC",
+   "status": "COMPLETE",
+   "round": 1,
+   "data": {
+    "issues": 0,
+    "reassessment_requests": 0,
+    "pass_number": 2
+   }
+  },
+  {
+   "seq": 27,
+   "ts": "2026-10-27T01:41:38.802160Z",
+   "type": "DISAGREEMENT_RESOLVED",
+   "message": "Disagreement resolved after reassessment: LEVEL_SPREAD",
+   "agent": null,
+   "status": null,
+   "round": 1,
+   "data": {
+    "disagreement_id": "level-spread"
+   }
+  },
+  {
+   "seq": 28,
+   "ts": "2026-10-27T01:41:38.803204Z",
+   "type": "CONSENSUS_COMPUTED",
+   "message": "Consensus computed: HIGH",
+   "agent": null,
+   "status": null,
+   "round": 0,
+   "data": {
+    "level": "HIGH",
+    "confidence": 0.8,
+    "unresolved": 0
+   }
+  },
+  {
+   "seq": 29,
+   "ts": "2026-10-27T01:41:38.804155Z",
+   "type": "SUMMARY_WRITTEN",
+   "message": "Executive summary written from structured results",
+   "agent": null,
+   "status": null,
+   "round": 0,
+   "data": {
+    "mode": "LLM"
+   }
+  },
+  {
+   "seq": 30,
+   "ts": "2026-10-27T01:41:38.804576Z",
+   "type": "REPORT_GENERATED",
+   "message": "Report generated with status COMPLETE",
+   "agent": null,
+   "status": null,
+   "round": 0,
+   "data": {
+    "report_status": "COMPLETE"
+   }
+  }
+ ],
+ "limitations": [
+  "Analysis is based solely on the description provided; missing details lower confidence.",
+  "Findings are generated by language models and can be incomplete or wrong. Review them with domain experts.",
+  "Any reference to EU AI Act tiers or GDPR is a hypothesis to be confirmed by qualified legal review, not a classification.",
+  "Agent weights and consensus thresholds are fixed heuristics, not calibrated statistics."
+ ],
+ "disclaimer": "This tool provides AI-assisted governance analysis for informational purposes and does not constitute legal advice, regulatory certification, or a formal compliance determination.",
+ "meta": {
+  "model": "gpt-4.1-mini",
+  "critic_model": "gpt-4.1-mini",
+  "max_reassessment_rounds": 1,
+  "reassessment_rounds_used": 1,
+  "duration_ms": 16,
+  "description_chars": 76,
+  "scenario_id": null,
+  "summary_mode": "LLM"
+ }
+}
