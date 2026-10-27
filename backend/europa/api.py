@@ -25,6 +25,9 @@ logger = logging.getLogger("europa.api")
 
 MAX_BODY_BYTES = 6 * MAX_DESCRIPTION_CHARS + 2048  # worst case UTF-8 plus JSON envelope
 
+TERMINAL_EVENTS = {"report", "error"}
+FLUSH_PADDING = b"\n" * 2048
+
 SECURITY_HEADERS = {
     "X-Content-Type-Options": "nosniff",
     "Cache-Control": "no-store",
@@ -181,6 +184,11 @@ def create_app(settings: Settings | None = None, llm: StructuredLLM | None = Non
             try:
                 async for event in stream_assessment(req, settings, model):
                     yield (json.dumps(event, ensure_ascii=False) + "\n").encode()
+                    if event["type"] in TERMINAL_EVENTS:
+                        # Whitespace after the final event pushes it through any proxy that
+                        # buffers small chunks. Clients ignore blank lines. Pitfall seen in a
+                        # previous project: the last event was held back and the UI hung.
+                        yield b'{"type":"end"}\n' + FLUSH_PADDING
             finally:
                 release()
 

@@ -69,8 +69,8 @@ async def test_valid_assessment_streams_events_then_report(app):
     assert r.headers["content-type"].startswith("application/x-ndjson")
     events = parse(r)
     kinds = [e["type"] for e in events]
-    assert kinds[0] == "audit" and kinds[-1] == "report" and kinds.count("report") == 1
-    report = events[-1]["report"]
+    assert kinds[0] == "audit" and kinds[-2:] == ["report", "end"] and kinds.count("report") == 1
+    report = events[-2]["report"]
     assert report["status"] == "COMPLETE"
     assert "does not constitute legal advice" in report["disclaimer"]
     assert report["consensus"]["overall_level"] in {"LOW", "MEDIUM", "HIGH", "CRITICAL"}
@@ -142,7 +142,7 @@ async def test_model_failure_in_every_agent_gives_failed_report_not_a_crash(sett
             script[k] = [LLMTimeoutError("timeout with secret detail sk-abc")]
     r = await post(create_app(settings, ScriptedLLM(script)), {"description": DESCRIPTION})
     assert r.status_code == 200
-    last = parse(r)[-1]
+    last = [e for e in parse(r) if e["type"] != "end"][-1]
     assert last["type"] == "report" and last["report"]["status"] == "FAILED"
     assert "sk-abc" not in r.text and "secret detail" not in r.text
 
@@ -151,7 +151,7 @@ async def test_malformed_model_output_yields_partial_report(settings):
     script = happy_script()
     script[AgentName.SECURITY] = [invalid_output()]
     r = await post(create_app(settings, ScriptedLLM(script)), {"description": DESCRIPTION})
-    last = parse(r)[-1]
+    last = [e for e in parse(r) if e["type"] != "end"][-1]
     assert last["report"]["status"] == "PARTIAL"
     failed = [a for a in last["report"]["agent_statuses"] if a["status"] == "FAILED"]
     assert [a["agent"] for a in failed] == ["SECURITY"]
@@ -225,3 +225,25 @@ async def test_openapi_and_docs_are_disabled(app):
     async with client_for(app) as c:
         assert (await c.get("/docs")).status_code == 404
         assert (await c.get("/openapi.json")).status_code == 404
+
+
+async def test_stream_ends_with_terminal_event_then_end_marker_and_padding(app):
+    r = await post(app, {"description": DESCRIPTION})
+    raw = r.content
+    lines = [ln for ln in raw.split(b"\n") if ln.strip()]
+    assert json.loads(lines[-2])["type"] == "report"
+    assert json.loads(lines[-1]) == {"type": "end"}
+    assert raw.endswith(b"\n" * 2048)  # flush padding follows the final event
+    assert r.headers["cache-control"] == "no-store, no-transform"
+    assert r.headers["x-accel-buffering"] == "no"
+
+
+async def test_error_event_is_also_followed_by_end_marker(settings, monkeypatch):
+    import europa.api as api_mod
+
+    async def broken(*_a, **_k):
+        yield {"type": "error", "error": {"code": "internal_error", "message": "x"}}
+
+    monkeypatch.setattr(api_mod, "stream_assessment", broken)
+    r = await post(create_app(settings, ScriptedLLM(happy_script())), {"description": DESCRIPTION})
+    assert [e["type"] for e in parse(r)] == ["error", "end"]

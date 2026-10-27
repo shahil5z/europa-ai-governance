@@ -13,11 +13,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from europa.config import Settings  # noqa: E402
-from europa.llm import LangChainStructuredLLM  # noqa: E402
-from europa.scenarios import get_scenario  # noqa: E402
-from europa.schemas import AssessmentRequest  # noqa: E402
-from europa.service import stream_assessment  # noqa: E402
+from europa.config import Settings
+from europa.llm import LangChainStructuredLLM
+from europa.scenarios import get_scenario
+from europa.schemas import AssessmentRequest
+from europa.service import stream_assessment
 
 
 async def main(scenario_id: str) -> int:
@@ -49,14 +49,24 @@ async def main(scenario_id: str) -> int:
     c = report["consensus"] or {}
     print(f"\nscenario={scenario_id} status={report['status']} wall_seconds={total:.1f}")
     print(f"overall={c.get('overall_level')} confidence={c.get('overall_confidence')}")
-    print(f"rounds_used={report['meta']['reassessment_rounds_used']} "
-          f"summary_mode={report['meta']['summary_mode']}")
+    print(
+        f"rounds_used={report['meta']['reassessment_rounds_used']} "
+        f"summary_mode={report['meta']['summary_mode']}"
+    )
     for s in report["agent_statuses"]:
-        print(f"  {s['agent']:<16} {s['status']:<9} attempts={s.get('attempts')} {s.get('error_code') or ''}")
+        err = s.get("error_code") or ""
+        print(f"  {s['agent']:<16} {s['status']:<9} attempts={s.get('attempts')} {err}")
     print("disagreements:", [(d["kind"], d["status"]) for d in report["disagreements"]])
-    print("limitations:", len(report["limitations"]), "recommendations:", len(report["recommendations"]))
+    print(
+        "limitations:",
+        len(report["limitations"]),
+        "recommendations:",
+        len(report["recommendations"]),
+    )
     return 0 if report["status"] in ("COMPLETE", "PARTIAL") else 1
 
 
 if __name__ == "__main__":
-    raise SystemExit(asyncio.run(main(sys.argv[1] if len(sys.argv) > 1 else "recruitment-screening")))
+    raise SystemExit(
+        asyncio.run(main(sys.argv[1] if len(sys.argv) > 1 else "recruitment-screening"))
+    )
