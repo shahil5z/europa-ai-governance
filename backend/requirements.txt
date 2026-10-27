@@ -1,0 +1,9 @@
+# Runtime dependencies (also used by the Vercel Python build).
+# Versions are ranges verified against the versions in the Phase 1 test run.
+fastapi>=0.162,<1
+uvicorn>=0.54,<1
+pydantic>=2.14,<3
+langchain-core>=1.7,<2
+langchain-openai>=1.7,<2
+langgraph>=1.2,<2
+openai>=3.39,<4
