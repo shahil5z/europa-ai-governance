@@ -23,6 +23,7 @@ Configured in the root `vercel.json`. The project framework preset is `services`
 
 ## Notes
 
-- `/_next/image` is not served under Services, so `images.unoptimized` is set and logos are pre-sized files.
+- `images.unoptimized` is set and images are pre-sized files, so the app does not depend on the Next.js image optimizer.
+- The backend deliberately has no `pyproject.toml`. Vercel prefers it over `requirements.txt` and would install nothing if it lacked a dependency list. Tool settings live in `pytest.ini` and `ruff.toml`.
 - Rate limits and the concurrency cap are in memory per function instance. Set a spend limit on the OpenAI key.
 - Local development does not need Vercel: run `uvicorn` and `next dev`, see the README.
